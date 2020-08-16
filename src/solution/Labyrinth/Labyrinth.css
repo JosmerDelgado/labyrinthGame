@@ -15,7 +15,10 @@ td {
 }
 
 .wall {
-  background-color: red;
+  background-color: brown;
+  background-image: url("https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/966a430b-f44d-407e-8917-4c24c6efd857/d6oxnt1-775d91aa-6286-401e-90ed-4d3a4d8dcc8f.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOiIsImlzcyI6InVybjphcHA6Iiwib2JqIjpbW3sicGF0aCI6IlwvZlwvOTY2YTQzMGItZjQ0ZC00MDdlLTg5MTctNGMyNGM2ZWZkODU3XC9kNm94bnQxLTc3NWQ5MWFhLTYyODYtNDAxZS05MGVkLTRkM2E0ZDhkY2M4Zi5wbmcifV1dLCJhdWQiOlsidXJuOnNlcnZpY2U6ZmlsZS5kb3dubG9hZCJdfQ.qzyhJ1D2c2z9HOPvVsX5qBjeIyeI002bwRWwzvlySxw");
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 .cell {
@@ -25,12 +28,21 @@ td {
   max-width: 30px;
 }
 
+.path {
+  background-image: url("https://i.pinimg.com/564x/0b/61/12/0b611238fe328faa6ba30e89aab39e32.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
 .position-ball {
   height: 90%;
   width: 90%;
   border-radius: 50%;
   border: 1px solid black;
   background-color: white;
+  background-image: url("https://cdn.imgbin.com/16/5/19/imgbin-student-computer-icons-school-illustration-student-bgqc2WnxQHbatSjQmXgGT3yia.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 .start-position {
   background-color: yellow;
@@ -38,6 +50,9 @@ td {
 
 .target-position {
   background-color: green;
+  background-image: url("https://cdn4.iconfinder.com/data/icons/school-education-14/512/Icon_1-512.png");
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 .non-visible-position {
@@ -58,4 +73,12 @@ td {
 
 .moves-message {
   text-align: end;
+}
+
+.win-text {
+  color: green;
+}
+
+.lose-text {
+  color: red;
 }

@@ -1,7 +1,8 @@
 import React, { useEffect, useState, useCallback, useMemo } from "react";
 import "./Labyrinth.css";
 import { Scoreboard } from "../../components/Scoreboard";
-import { useGameDispatch, useGameState } from "../../context/scoreboardContext";
+import { useGameDispatch, useGameState } from "../../context/gameContext";
+import LabyrinthCell from "./LabyrinthCell";
 
 export type Position = [/** row */ number, /** col */ number];
 
@@ -9,6 +10,7 @@ export interface Props {
   targetPosition: Position;
   availableCells: (0 | 1)[][];
   startingPosition: Position;
+  level: string;
   moveLimit?: number;
   cellSize?: number;
   shadow?: boolean;
@@ -29,6 +31,7 @@ const Labyrinth = ({
   availableCells,
   startingPosition,
   moveLimit,
+  level,
   cellSize,
   shadow,
   visibleCells,
@@ -39,6 +42,14 @@ const Labyrinth = ({
   const [xStartingPosition, yStartingPosition] = startingPosition;
   const gameDispatch = useGameDispatch();
   const gameState = useGameState();
+  const restartGame = () => {
+    setCurrentPosition(startingPosition);
+    setMoves(moveLimit);
+  };
+  useEffect(() => {
+    restartGame();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [level]);
   const gameOver = useMemo(
     () =>
       moves === 0 ||
@@ -46,10 +57,7 @@ const Labyrinth = ({
         currentPosition[1] === targetPosition[1]),
     [currentPosition, moves, targetPosition]
   );
-  const restartGame = () => {
-    setCurrentPosition(startingPosition);
-    setMoves(moveLimit);
-  };
+
   const handleKeyPress = useCallback(
     (event: { key: string }) => {
       const keyPressed = keyPressedObject[event.key];
@@ -86,16 +94,16 @@ const Labyrinth = ({
       currentPosition[1] === targetPosition[1] &&
       gameOver
     ) {
-      console.log("HELLO");
       gameDispatch({
         type: "addScoreboard",
         payload: {
-          level: 0,
           score: { name: gameState.player.name || "UNKNOWN", score: moves },
         },
       });
+      gameDispatch({ type: "levelUp" });
     }
-  }, [gameOver]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [gameOver, currentPosition]);
 
   return (
     <div className={"container"}>
@@ -104,59 +112,24 @@ const Labyrinth = ({
           <tbody>
             {availableCells.map((row, indexRow) => (
               <tr key={indexRow}>
-                {row.map((item, index) => {
+                {row.map((item, indexColumn) => {
                   const isStartingPosition =
                     xStartingPosition === indexRow &&
-                    yStartingPosition === index;
+                    yStartingPosition === indexColumn;
                   const isTargetPosition =
-                    xTargetPosition === indexRow && yTargetPosition === index;
-                  const isCurrentPosition =
-                    currentPosition[0] === indexRow &&
-                    currentPosition[1] === index;
-                  const visiblePosition =
-                    isTargetPosition ||
-                    isCurrentPosition ||
-                    (currentPosition[0] + 1 === indexRow &&
-                      currentPosition[1] + 1 === index) ||
-                    (currentPosition[0] - 1 === indexRow &&
-                      currentPosition[1] - 1 === index) ||
-                    (currentPosition[0] + 1 === indexRow &&
-                      currentPosition[1] - 1 === index) ||
-                    (currentPosition[0] - 1 === indexRow &&
-                      currentPosition[1] + 1 === index) ||
-                    (currentPosition[0] === indexRow &&
-                      currentPosition[1] + 1 === index) ||
-                    (currentPosition[0] === indexRow &&
-                      currentPosition[1] - 1 === index) ||
-                    (currentPosition[0] + 1 === indexRow &&
-                      currentPosition[1] === index) ||
-                    (currentPosition[0] - 1 === indexRow &&
-                      currentPosition[1] === index);
+                    xTargetPosition === indexRow &&
+                    yTargetPosition === indexColumn;
                   return (
-                    <td
-                      key={index}
-                      className={`cell ${
-                        isStartingPosition ? "start-position" : ""
-                      } ${
-                        item
-                          ? visiblePosition
-                            ? ""
-                            : "non-visible-position"
-                          : visiblePosition
-                          ? "wall"
-                          : "non-visible-position"
-                      } ${isTargetPosition ? "target-position" : ""}`}
-                      data-testid="cell"
-                    >
-                      {isCurrentPosition && (
-                        <>
-                          <div
-                            data-testid="position-ball"
-                            className={"position-ball"}
-                          />
-                        </>
-                      )}
-                    </td>
+                    <LabyrinthCell
+                      key={`${indexRow}${indexColumn}`}
+                      indexRow={indexRow}
+                      indexColumn={indexColumn}
+                      currentPosition={currentPosition}
+                      item={item}
+                      isStartingPosition={isStartingPosition}
+                      isTargetPosition={isTargetPosition}
+                      shadow={shadow}
+                    />
                   );
                 })}
               </tr>
@@ -167,10 +140,18 @@ const Labyrinth = ({
           moves left {moves}
         </div>
         <div className={"game-over-container"}>
-          {moves === 0 && <div data-testid="lose-message">You lose</div>}
+          {moves === 0 &&
+            currentPosition[0] !== targetPosition[0] &&
+            currentPosition[1] !== targetPosition[1] && (
+              <div data-testid="lose-message" className={"lose-text"}>
+                You lose
+              </div>
+            )}
           {currentPosition[0] === targetPosition[0] &&
             currentPosition[1] === targetPosition[1] && (
-              <div data-testid="win-message">You won</div>
+              <div data-testid="win-message" className={"win-text"}>
+                You won
+              </div>
             )}
           {gameOver && <button onClick={restartGame}>Restart</button>}
         </div>

@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { Score } from "../../context/scoreboardContext";
+import { Score } from "../../context/gameContext";
 
 interface ScoreboardItemProps {
   index: number;

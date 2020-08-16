@@ -3,12 +3,13 @@ import { render, fireEvent } from "@testing-library/react";
 
 import { Labyrinth } from "./solution/Labyrinth";
 import { Props } from "./solution/Labyrinth/Labyrinth";
-import { ScoreboardProvider } from "./context/scoreboardContext";
+import { GameProvider } from "./context/gameContext";
 
 describe("Labyrinth", () => {
   let props: Props;
   beforeEach(() => {
     props = {
+      level: "test",
       targetPosition: [4, 4],
       availableCells: [
         [1, 1, 1, 1, 1],
@@ -25,9 +26,9 @@ describe("Labyrinth", () => {
 
   it("should win", () => {
     const { container, getByTestId, queryByTestId } = render(
-      <ScoreboardProvider>
+      <GameProvider>
         <Labyrinth {...props} />
-      </ScoreboardProvider>
+      </GameProvider>
     );
     fireEvent.keyDown(container, { key: "ArrowRight" });
     fireEvent.keyDown(container, { key: "ArrowRight" });
@@ -44,12 +45,13 @@ describe("Labyrinth", () => {
 
   it("should lose", () => {
     const { container, getByTestId, queryByTestId } = render(
-      <ScoreboardProvider>
+      <GameProvider>
         <Labyrinth {...props} moveLimit={2} />
-      </ScoreboardProvider>
+      </GameProvider>
     );
     fireEvent.keyDown(container, { key: "ArrowRight" });
     fireEvent.keyDown(container, { key: "ArrowRight" });
+    fireEvent.keyDown(container, { key: "LeftRight" });
     expect(getByTestId("moves-message").textContent).toEqual("moves left 0");
     expect(queryByTestId("win-message")).not.toBeTruthy();
     expect(queryByTestId("lose-message")).toBeTruthy();

@@ -3,13 +3,13 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
-import { ScoreboardProvider } from "./context/scoreboardContext";
+import { GameProvider } from "./context/gameContext";
 
 ReactDOM.render(
   <React.StrictMode>
-    <ScoreboardProvider>
+    <GameProvider>
       <App />
-    </ScoreboardProvider>
+    </GameProvider>
   </React.StrictMode>,
   document.getElementById("root")
 );

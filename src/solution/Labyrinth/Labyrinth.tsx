@@ -108,6 +108,8 @@ const Labyrinth = ({
   return (
     <div className={"container"}>
       <span>
+        <h1> School Labrynth</h1>
+        <h3>{`Level: ${level}`}</h3>
         <table className={"labyrinth_table"}>
           <tbody>
             {availableCells.map((row, indexRow) => (

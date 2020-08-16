@@ -1,0 +1,61 @@
+table,
+th,
+td {
+  border: 1px solid black;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.labyrinth_table {
+  display: block;
+}
+
+.wall {
+  background-color: red;
+}
+
+.cell {
+  height: 30px;
+  width: 30px;
+  max-height: 30px;
+  max-width: 30px;
+}
+
+.position-ball {
+  height: 90%;
+  width: 90%;
+  border-radius: 50%;
+  border: 1px solid black;
+  background-color: white;
+}
+.start-position {
+  background-color: yellow;
+}
+
+.target-position {
+  background-color: green;
+}
+
+.non-visible-position {
+  background-color: grey;
+}
+.ball-position {
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
+}
+
+.game-over-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.moves-message {
+  text-align: end;
+}
